@@ -1,0 +1,57 @@
+﻿@{
+	ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<div class="row">
+	<div class="col-md-4">
+		<div class="panel panel-default">
+			<div class="panel-heading">Connection Status</div>
+			<div class="panel-body">
+				<span id="connectionStatus"></span>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="panel panel-default">
+			<div class="panel-heading">Connection Information</div>
+			<div class="panel-body">
+				<span id="status"></span>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="panel panel-default">
+			<div class="panel-heading">Server Time</div>
+			<div class="panel-body">
+				<span id="timeDisplay"></span>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section scripts {
+	<script src="~/signalr/hubs" type="text/javascript"></script>
+	<script type="text/javascript">
+		var lbTimeDisplay = $("#timeDisplay");
+		var lbStatus = $("#status");
+		var lbConnectionStatus = $("#connectionStatus");
+
+		var webHub = $.connection.web;
+		webHub.client.UpdateConnectionStatus = function (status) {
+			lbConnectionStatus.html(status);
+		};
+		webHub.client.UpdateStatus = function (status) {
+			lbStatus.html(status);
+		};
+		webHub.client.UpdateTimeDisplay = function (time) {
+			lbTimeDisplay.html(time);
+		};
+		webHub.client.ButtonWasClicked = function () {
+			alert("A button was clicked on the hardware device.");
+		};
+
+		$.connection.hub.start();
+	</script>
+}
